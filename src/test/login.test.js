@@ -2,7 +2,7 @@
 import React from 'react'
 //import '@testing-library/jest-dom/extend-expect'
 import { render } from '@testing-library/react'
-import Dashboard from '../components/dashboard.js'
+import Dashboard from '../components/pages/dashboard.js'
 import { prettyDOM } from '@testing-library/react'
 
 const mockClick = jest.fn()

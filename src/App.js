@@ -1,48 +1,23 @@
-import './App.css'
-import Dashboard from './components/dashboard.js'
-import Login from './components/login.js'
-import React, { useEffect, useState } from 'react'
+import './styles/App.css'
+import React from 'react'
+import { BrowserRouter as Router  } from 'react-router-dom'
+import { Footer } from './components/footer'
+import { Header } from './components/header'
+import { IndexRoutes } from './components/router/index.routes'
+
 
 function App() {
-	const [messageError, setMessageError] = useState('Hola Mundo')
-	const [user, setUser] = useState(null)
-
-	useEffect(() => {
-		const loggedUserJson = window.localStorage.getItem('loggedAppUser')
-		if(loggedUserJson) {
-			const user = JSON.parse(loggedUserJson)
-			setUser(user)
-		}
-	}, [])
-
-	const respondLogin = async (respond, message) => {
-		setUser(respond)
-		setMessageError(message)
-	}
-
-	const logout = () => {
-		setUser(null)
-		setMessageError('Hola Mundo')
-		window.localStorage.removeItem('loggedAppUser')
-	}
 
 	return (
-		<div className="App">
-			{!user ? (
-				<Login
-					respondLogin = {respondLogin}
-					messageError = {messageError}
-				/>
-			) 
-				:
-				(
-					<Dashboard 
-						user = {user}
-						logout = {logout}
-					/>
-				)
-			}
-		</div>
+		<Router>
+			<div className='App'>
+				<Header />
+				<div className='app_content'>
+					<IndexRoutes />
+				</div>
+				<Footer />
+			</div>
+		</Router>
 	)
 }
 
