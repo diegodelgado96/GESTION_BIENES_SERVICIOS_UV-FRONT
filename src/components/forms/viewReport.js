@@ -42,7 +42,6 @@ export const ViewReport = () => {
 
 		try {
 			const respond = await getReport(user.user.idUsuario, user.user.token, ticket)
-			console.log(respond)
 			await refreshToken.refreshToken(respond)
 			setData(respond)
 		}

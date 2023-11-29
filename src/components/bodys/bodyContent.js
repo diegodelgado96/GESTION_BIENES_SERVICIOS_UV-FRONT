@@ -11,8 +11,8 @@ export const BodyContent = () => {
 	const { user } = useUser()
 
 	return (
-		<div className='containerbody'>
-			<div className='bodyContent'>
+		<div className={'containerbody'}>
+			<div className={'bodyContent'}>
 				<Routes>
 					<Route path='/signin'
 						element={

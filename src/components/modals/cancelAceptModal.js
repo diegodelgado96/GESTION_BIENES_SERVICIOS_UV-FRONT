@@ -36,7 +36,7 @@ export const CancelAceptModal = ({ subTitle, ...props }) => {
 							</>
 						) :
 
-						props.title === 'Reporte Realizado' ?
+						props.title === 'Reporte Realizado' || props.title === 'Proveedor registrado' || props.title === 'Tarea registrada' ?
 
 							(
 								<PButton onClick={() => handleConfirm('Acept')}>
@@ -45,9 +45,16 @@ export const CancelAceptModal = ({ subTitle, ...props }) => {
 							)
 							:
 							(
-								<PButton onClick={props.handleCloseModal}>
-									Aceptar
-								</PButton>
+								props.title === 'Error' ?
+									(
+										<PButton onClick={() => handleConfirm('Acept')}>
+											Aceptar
+										</PButton>
+									) : (
+										<PButton onClick={() => handleConfirm('Cancel')}>
+											Aceptar
+										</PButton>
+									)
 							)
 				}
 

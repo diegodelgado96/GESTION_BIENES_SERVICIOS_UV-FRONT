@@ -86,7 +86,7 @@ export const Sidebar = ({ title }) => {
 								<></>
 							)
 					}
-					<StyledLi className="exitLink">
+					<StyledLi className={'exitLink'}>
 						<StyledLink to="/" onClick={logout} className={'neverActive'}>
 							<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'>
 								<path fillRule='evenodd' clipRule='evenodd' d='M15.2587 11.25H6.25V8.75H15.17L13.8125 7.3925L15.58 5.625L20 10.045L15.58 14.4637L13.8125 12.6962L15.2587 11.25ZM12.5 5H10V2.5H2.5V17.5H10V15H12.5V20H0V0H12.5V5Z' fill='#E40613' />

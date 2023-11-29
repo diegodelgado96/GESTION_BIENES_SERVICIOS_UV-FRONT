@@ -60,7 +60,7 @@ export const DropZone = (props) => {
 				id="dropzoneFile"
 				className="dropzoneFile"
 				multiple
-				accept="image/*"
+				accept={props.type}
 				onChange={handleInputChange}
 			/>
 			<div
@@ -114,5 +114,6 @@ export const DropZone = (props) => {
 }
 
 DropZone.propTypes = {
-	loadFile: PropTypes.func.isRequired
+	loadFile: PropTypes.func.isRequired,
+	type: PropTypes.string.isRequired
 }

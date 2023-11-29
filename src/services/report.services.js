@@ -34,9 +34,7 @@ export const getReport = async (idRequest, token, ticket) => {
 			idRequest
 		}
 	}
-
 	console.log({idRequest, token, ticket})
-
 	const { data } = await axios.get(`${url}/${ticket}`, config)
 	return data
 }
@@ -49,8 +47,23 @@ export const assign =  async (idRequest, token, Proveedores_idProveedor, idRepor
 		}
 	}
 
-	console.log({idRequest, token, Proveedores_idProveedor: idReport})
-
 	const { data } = await axios.patch(`${url}/${idReport}`, {Proveedores_idProveedor}, config)
+	
 	return data
 } 
+
+export const addDoc = async (idRequest, token, doc, ticket) => {
+	const conver = UseBase64()
+	const config = {
+		headers: {
+			authorization: 'Bearer '+token,
+			idRequest
+		}
+	}
+
+	const base64 = await conver.getBase64(doc)
+	
+
+	const { data } = await axios.post(`${url}/doc/${ticket}`, {doc: base64}, config)
+	return data
+}

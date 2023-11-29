@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { assign } from '../../services/report.services'
 import { Col, Form, Row } from 'react-bootstrap'
 import { CancelAceptModal } from '../modals/cancelAceptModal'
-import { LeftReport, PButton, RightReport, StyledFormSelect, SubTitleReport, TitleReport } from '../tools/styleContent'
+import { ColWhite, LeftReport, PButton, RightReport, RowData, StyledFormSelect, SubTitleReport, TitleReport } from '../tools/styleContent'
 import { PropTypes } from 'prop-types'
 import { Spinner } from '../tools/spinner'
 import { UseLogout } from '../../hooks/useLogout'
@@ -44,10 +44,8 @@ export const Dependence = (props) => {
 			setMessage('El proveedor fue asignado correctamente')
 			const newProveedor = allProveedores.filter(p => p.idProveedor === respond.Proveedores_idProveedor)
 			setTitular(newProveedor[0].nombreTitular)
-			console.log({ respond, newProveedor })
 		}
 		catch (e) {
-			console.log(e)
 			setTitle('Error')
 			if (e.response?.data?.error?.name === 'TokenExpiredError') {
 				logOut.logOut()
@@ -64,8 +62,8 @@ export const Dependence = (props) => {
 
 	return (
 		<>
-			<Col xs={12} lg={4}>
-				<div style={{ padding: '0 1.8rem' }}>
+			<ColWhite xs={12} lg={4}>
+				<div >
 					<Row xs={12}>
 						<Col xs={12}>
 							<TitleReport>Dependencia</TitleReport>
@@ -74,7 +72,7 @@ export const Dependence = (props) => {
 							<SubTitleReport>Proveedor</SubTitleReport>
 						</Col>
 					</Row>
-					<Row xs={12}>
+					<RowData xs={12}>
 						<Col xs={6} lg={6}>
 							<LeftReport>
 								Profesional:
@@ -91,8 +89,8 @@ export const Dependence = (props) => {
 								}
 							</RightReport>
 						</Col>
-					</Row>
-					<Row xs={12}>
+					</RowData>
+					<RowData xs={12}>
 						<Col xs={6} lg={6}>
 							<LeftReport>
 								Ticket:
@@ -103,7 +101,7 @@ export const Dependence = (props) => {
 								{props.data.ticket}
 							</RightReport>
 						</Col>
-					</Row>
+					</RowData>
 					{
 						props.data.rol === 'ADMIN' ? (
 							<Row xs={12}>
@@ -135,7 +133,7 @@ export const Dependence = (props) => {
 						)
 					}
 				</div>
-			</Col>
+			</ColWhite>
 			<CancelAceptModal
 				showModal={show}
 				handleCloseModal={handleCloseModal}
@@ -159,5 +157,5 @@ export const Dependence = (props) => {
 }
 
 Dependence.propTypes = {
-	data: PropTypes.object.isRequired, // title debe ser una cadena y es requerido // className es opcional y debe ser una cadena si está presente
+	data: PropTypes.object.isRequired, 
 }

@@ -7,14 +7,13 @@ import { DivForm, InputForm, LabelForm, PButton, SButton, StyledForm, StyledForm
 import { DropZone } from '../tools/dropZone'
 import { Alert, Container, Form, Table } from 'react-bootstrap'
 import { CancelAceptModal } from '../modals/cancelAceptModal'
-import { PropTypes } from 'prop-types'
 import { Spinner } from '../tools/spinner'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '../../hooks/useUser'
 import { UseLogout } from '../../hooks/useLogout'
 import { UseRefreshToken } from '../../hooks/useRefreshToken'
 
-export const NewReport = (props) => {
+export const NewReport = () => {
 	const user = useUser()
 	const nav = useNavigate()
 	const logout = UseLogout()
@@ -24,6 +23,7 @@ export const NewReport = (props) => {
 	const [ubicacion, setUbicacion] = useState('')
 	const [descripcionLugar, setDescripcionLugar] = useState('')
 	const [tipoDanio, setTipoDanio] = useState('')
+	const [tipoReporte, setTipoReporte] = useState('')
 	const [descripcionDanio, setDescripcionDanio] = useState('')
 	const [listState, setList] = useState([])
 	const [formError, setFormError] = useState(false)
@@ -48,14 +48,13 @@ export const NewReport = (props) => {
 		}
 
 		try {
-			const respond = await createReport(user.user.token, user.user.idUsuario, edificio, ubicacion, descripcionLugar, tipoDanio, descripcionDanio, listState, props.tipo)
+			const respond = await createReport(user.user.token, user.user.idUsuario, edificio, ubicacion, descripcionLugar, tipoDanio, descripcionDanio, listState, tipoReporte)
 			setTitle('Reporte Realizado')
 			setSubTitle('EL ticket asignado a tu report es:')
 			await refreshToken.refreshToken(respond)
 			setMessage(respond.ticket)
 		}
 		catch (e) {
-			console.log(e)
 			setTitle('Error')
 			setSubTitle('')
 			if (e.response?.data?.error?.name === 'TokenExpiredError') {
@@ -183,6 +182,24 @@ export const NewReport = (props) => {
 									/>
 								</Col>
 							</Col>
+							<Col xs={12} md={6} className={`${!tipoReporte && formError ? 'errorForm' : ''}`}>
+								<Col xs={12}>
+									<LabelForm>Tipo de reporte</LabelForm>
+								</Col>
+								<Col xs={12}>
+									<StyledFormSelect
+										aria-label="Default select example"
+										value={tipoReporte}
+										name='tipoReporte'
+										placeholder='Tipo'
+										onChange={({ target }) => setTipoReporte(target.value)}
+									>
+										<option></option>
+										<option value="INFRAESTRUCTURA">Infraestructura</option>
+										<option value="MANTENIMIENTO">Mantenimiento</option>
+									</StyledFormSelect>
+								</Col>
+							</Col>
 						</Row>
 						<Row xs={12}>
 							<Col xs={12} className={`${!descripcionDanio && formError ? 'errorForm' : ''}`}>
@@ -202,7 +219,7 @@ export const NewReport = (props) => {
 							</Col>
 						</Row>
 						<Row xs={12}>
-							<DropZone loadFile={loadFile} />
+							<DropZone loadFile={loadFile} type={'image/*'} />
 						</Row>
 						<Row xs={12}>
 							<Table responsive="sm">
@@ -270,9 +287,4 @@ export const NewReport = (props) => {
 
 		</DivForm >
 	)
-}
-
-
-NewReport.propTypes = {
-	tipo: PropTypes.string.isRequired, // title debe ser una cadena y es requerido // className es opcional y debe ser una cadena si está presente
 }
