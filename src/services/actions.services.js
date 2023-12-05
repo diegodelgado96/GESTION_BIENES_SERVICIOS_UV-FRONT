@@ -28,7 +28,7 @@ export const patchAction = async (idRequest, token, idAction, estado) => {
 	return data
 }
 
-export const newAction = async (idRequest, token, estado, accion, descripcionAccion, idReporte) => {
+export const newAction = async (idRequest, token, estado, accion, descripcionAccion, idReporte, idSolicitud) => {
 	const config = {
 		headers: {
 			authorization: 'Bearer ' + token,
@@ -36,8 +36,9 @@ export const newAction = async (idRequest, token, estado, accion, descripcionAcc
 		}
 	}
 
-	const obj = {estado, accion, descripcionAccion, idReporte}
+	const obj = {estado, accion, descripcionAccion, idReporte, idSolicitud}
 	console.log(obj, config)
-	//const { data } = await axios.post(url, obj, config)
-	//return data
+	
+	const { data } = await axios.post(url, obj, config)
+	return data
 }

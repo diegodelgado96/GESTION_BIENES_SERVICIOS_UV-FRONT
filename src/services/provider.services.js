@@ -89,7 +89,6 @@ export const pathProvider = async (idRequest, token, obj) => {
 				idRequest
 			}
 		}
-		console.log('aqui')
 		const conver = UseBase64()
 
 
@@ -107,7 +106,7 @@ export const pathProvider = async (idRequest, token, obj) => {
 
 		console.log({ config, obj })
 
-		const { data } = await axios.patch(`${url}/${obj.id}`, obj, config)
+		const { data } = await axios.patch(`${url}/${obj.idProveedor}`, obj, config)
 		return data
 	}
 	catch (error) {

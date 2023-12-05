@@ -196,7 +196,8 @@ export const NewReport = () => {
 									>
 										<option></option>
 										<option value="INFRAESTRUCTURA">Infraestructura</option>
-										<option value="MANTENIMIENTO">Mantenimiento</option>
+										<option value="MANTENIMIENTO CORRECTIVO">Mantenimiento Correctivo</option>
+										<option value="MANTENIMIENTO PREVENTIVO">Mantenimiento Preventivo</option>
 									</StyledFormSelect>
 								</Col>
 							</Col>

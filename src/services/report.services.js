@@ -46,8 +46,19 @@ export const assign =  async (idRequest, token, Proveedores_idProveedor, idRepor
 			idRequest
 		}
 	}
-
 	const { data } = await axios.patch(`${url}/${idReport}`, {Proveedores_idProveedor}, config)
+	
+	return data
+} 
+
+export const assignObject =  async (idRequest, token, object, idReport) => {
+	const config = {
+		headers: {
+			authorization: 'Bearer '+token,
+			idRequest
+		}
+	}
+	const { data } = await axios.patch(`${url}/${idReport}`, object, config)
 	
 	return data
 } 

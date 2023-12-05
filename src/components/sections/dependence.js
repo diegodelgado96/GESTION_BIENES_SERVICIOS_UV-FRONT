@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { assignReq } from '../../services/request.services'
 import { assign } from '../../services/report.services'
 import { Col, Form, Row } from 'react-bootstrap'
 import { CancelAceptModal } from '../modals/cancelAceptModal'
@@ -38,7 +39,11 @@ export const Dependence = (props) => {
 		}
 
 		try {
-			const respond = await assign(user.idUsuario, user.token, proveedor, props.data.idReporte)
+			let respond
+			if(props.data.idReporte)
+				respond = await assign(user.idUsuario, user.token, proveedor, props.data.idReporte)
+			else 
+				respond = await assignReq(user.idUsuario, user.token, proveedor, props.data.idSolicitud)
 			setTitle('Asignación')
 			await refreshToken.refreshToken(respond)
 			setMessage('El proveedor fue asignado correctamente')
@@ -59,14 +64,20 @@ export const Dependence = (props) => {
 	const handleConfirmSubmit = () => {
 		setShow(false)
 	}
-
+	console.log(props.data.tipo)
 	return (
 		<>
 			<ColWhite xs={12} lg={4}>
 				<div >
 					<Row xs={12}>
 						<Col xs={12}>
-							<TitleReport>Dependencia</TitleReport>
+							<TitleReport>{props.data.tipo}  
+								{
+									props.data.tipo === 'Reporte' ? 
+										' ' + props.capitalizeFirst(props.data.tipoReporte) : 	
+										' ' + props.capitalizeFirst(props.data.tipoSolicitud)					
+								}
+							</TitleReport>
 						</Col>
 						<Col xs={12}>
 							<SubTitleReport>Proveedor</SubTitleReport>
@@ -158,4 +169,5 @@ export const Dependence = (props) => {
 
 Dependence.propTypes = {
 	data: PropTypes.object.isRequired, 
+	capitalizeFirst: PropTypes.func.isRequired	
 }

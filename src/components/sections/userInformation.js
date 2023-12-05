@@ -8,6 +8,9 @@ import { PropTypes } from 'prop-types'
 export const UserInformation = (props) => {
 
 	const user = props.data.usuario
+
+	const name = user.Nombres.split(' ')[0] + ' ' + user.Nombres.split(' ')[2] 
+
 	return (
 		<>
 			<ColWhite xs={12} lg={4}>
@@ -32,7 +35,7 @@ export const UserInformation = (props) => {
 						</Col>
 						<Col xs={6} lg={6}>
 							<RightReport>
-								{user.Nombres}
+								{name}
 							</RightReport>
 						</Col>
 					</RowData>
@@ -65,12 +68,17 @@ export const UserInformation = (props) => {
 					<RowData xs={12}>
 						<Col xs={6} lg={6}>
 							<LeftReport>
-								Tipo de reporte:
+								Tipo:
 							</LeftReport>
 						</Col>
 						<Col xs={6} lg={6}>
 							<RightReport>
-								{props.data.tipoReporte}
+								{/* {} */}
+								{
+									props.data.tipo === 'Reporte' ?
+										props.capitalizeFirst(props.data.tipoReporte) : 
+										props.data.tipo + ' ' + props.capitalizeFirst(props.data.tipoSolicitud)
+								}
 							</RightReport>
 						</Col>
 					</RowData>
@@ -81,5 +89,6 @@ export const UserInformation = (props) => {
 }
 
 UserInformation.propTypes = {
-	data: PropTypes.object.isRequired, // title debe ser una cadena y es requerido // className es opcional y debe ser una cadena si está presente
+	data: PropTypes.object.isRequired,
+	capitalizeFirst: PropTypes.func.isRequired
 }

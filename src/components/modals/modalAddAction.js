@@ -6,7 +6,7 @@ import { NewActionForm } from '../forms/newActionForm'
 
 export const ModalAddAction = (props) => {
 
-	console.log(props.type)
+	console.log(props.request)
 	const [show, setShow] = useState(true)
 
 	const handleConfirm = (text) => {
@@ -31,10 +31,10 @@ export const ModalAddAction = (props) => {
 	return (
 		<ModalFormProvider show={props.showModal && show} onHide={props.handleCloseModal} className='modalAcept'>
 			<Modal.Header>
-				<Modal.Title>{props.type} Nueva Tarea </Modal.Title>
+				<Modal.Title>Nueva Tarea </Modal.Title>
 			</Modal.Header>
 			<Modal.Body style={{ height: 'auto !important' }} className='hla'>
-				<NewActionForm type={props.type} handleConfirm={handleConfirm} close={close} idProvider={props.idProvider} handleCloseModal={handleCloseModal} newActionR={newActionR}/>
+				<NewActionForm provider={props.provider} request={props.request} handleConfirm={handleConfirm} close={close} idProvider={props.idProvider} handleCloseModal={handleCloseModal} newActionR={newActionR}/>
 			</Modal.Body>
 
 		</ModalFormProvider>
@@ -42,7 +42,8 @@ export const ModalAddAction = (props) => {
 }
 
 ModalAddAction.propTypes = {
-	type: PropTypes.string.isRequired,
+	provider: PropTypes.string.isRequired,
+	request: PropTypes.string.isRequired,
 	idProvider: PropTypes.string.isRequired,
 	showModal: PropTypes.bool.isRequired,
 	handleCloseModal: PropTypes.func.isRequired,

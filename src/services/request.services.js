@@ -38,3 +38,27 @@ export const getAll = async (idRequest, token) => {
 	const { data } = await axios.get(`${url}/getAll`, config)
 	return data
 }
+
+export const assignReq =  async (idRequest, token, Proveedores_idProveedor, idReq) => {
+	const config = {
+		headers: {
+			authorization: 'Bearer '+token,
+			idRequest
+		}
+	}
+	const { data } = await axios.patch(`${url}/${idReq}`, {Proveedores_idProveedor}, config)
+	
+	return data
+} 
+
+export const assignReqObject =  async (idRequest, token, object, idReq) => {
+	const config = {
+		headers: {
+			authorization: 'Bearer '+token,
+			idRequest
+		}
+	}
+	const { data } = await axios.patch(`${url}/${idReq}`, object, config)
+	
+	return data
+} 

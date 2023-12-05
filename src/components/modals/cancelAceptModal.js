@@ -36,7 +36,7 @@ export const CancelAceptModal = ({ subTitle, ...props }) => {
 							</>
 						) :
 
-						props.title === 'Reporte Realizado' || props.title === 'Proveedor registrado' || props.title === 'Tarea registrada' ?
+						props.title === 'Reporte Realizado' || props.title === 'Proveedor registrado' || props.title === 'Tarea registrada' || props.title === 'Solicitud Actualizada' ?
 
 							(
 								<PButton onClick={() => handleConfirm('Acept')}>

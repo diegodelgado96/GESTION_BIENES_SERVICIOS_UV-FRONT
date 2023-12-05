@@ -103,7 +103,7 @@ body, html {
 
 
 .loginButton {
-  width: 22rem !important;
+  width: 100% !important;
   margin-top: 15px !important;
 }
 

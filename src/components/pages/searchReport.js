@@ -6,7 +6,7 @@ import { ViewReport } from '../forms/viewReport'
 export const SearchReport = () => {
 	return (
 		<div className="peticion-container">
-			<Sidebar title={'Reportes'}/>
+			<Sidebar title={'Tickets'}/>
 			<Container>
 				<div className='dash'>
 					<ViewReport />

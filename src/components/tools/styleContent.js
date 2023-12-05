@@ -44,6 +44,7 @@ export const PButton2 = styled.button `
     max-width: 100% !important;
     margin-top: 10px !important;
     font-weight: 600;
+    max-height: 50px;
     
     &:hover {
         background: #E58D8D;
@@ -267,6 +268,16 @@ export const StyledTD = styled.td `
     font-weight: 400;
     line-height: normal;
 
+    &.textGreen {
+        color: #2FC674 !important;
+        font-weight: 700;
+    }
+
+    &.textRed {
+        color: red !important;
+        font-weight: 700;
+    }
+
     button {
         max-width: max-content !important;
     }
@@ -363,6 +374,7 @@ export const ColGray = styled(Col) `
     background: #F5F5F5;
     padding: 20px 2.5rem 30px;
     border-radius: 10px;
+    display: grid;
     svg {
         margin-right: 10px;
     }
@@ -372,6 +384,7 @@ export const ColWhite = styled(Col) `
     background: #FFF;
     padding: 20px 2.5rem 30px;
     border-radius: 10px;
+    display: grid;
     svg {
         margin-right: 10px;
     }
@@ -413,7 +426,7 @@ export const NotAction = styled.p `
     justify-content: center;
     align-items: center;
     display: flex;
-    height: 100%;
+    height: auto;
     color: #BDBDBD;
 `
 
@@ -437,7 +450,35 @@ export const ButtonBox = styled(Col) `
     align-items: center;
 
     button {
-        margin: 0px !important;s
+        margin: 0px !important;
+    }
+`
+
+export const ColGalery = styled(Col) `
+    cursor: pointer;
+    padding: 0px 12px;
+    height: 100px; 
+    overflow: hidden; 
+    margin: 12px 0px;
+
+    img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover;
+    }
+`
+
+export const ColImgDoc = styled(Col) `
+    cursor: pointer;
+    padding: 0px 12px;
+    height: 100%; 
+    overflow: hidden; 
+    margin: 12px 0px;
+
+    img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover;
     }
 `
 
@@ -463,4 +504,30 @@ export const ModalFormProvider = styled(Modal) `
         width: 90% !important;
      }
   }
+`
+
+export const ObservationP = styled.p `
+  color: #717171;
+  text-align: justify;
+  font-size: 0.8rem;
+`
+
+export const DivState = styled.div `
+    padding: 4px 0px;
+    border-radius: 10px;
+
+    &.green {
+        background: #D8E9DE;
+        color: #71A17F;
+    }
+
+    &.red {
+        background: #F6C3CE;
+        color: #893A4B;
+    }
+
+    &.orange {
+        background: #F2C8A9;
+        color: #9A6946;
+    }
 `

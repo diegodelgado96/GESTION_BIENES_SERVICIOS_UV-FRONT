@@ -28,25 +28,25 @@ export const ReportStatus = (props) => {
 		fileInputRef.current.click()
 	}
 
-	const downloadFile = () => {
-		const decodedPdfContent = atob(documento)
-		const blob = new Blob([decodedPdfContent], { type: 'application/pdf' })
-		const url = URL.createObjectURL(blob)
-		const a = document.createElement('a')
-		a.href = url
-		a.download = `${props.data.ticket}_informe.pdf`
-		document.body.appendChild(a)
-		a.click()
-		document.body.removeChild(a)
-		URL.revokeObjectURL(url)
+	const downloadFile = async () => {
+		try {
+			const linkSource = documento
+			const downloadLink = document.createElement('a')
+			const fileName = `${props.data.ticket}_informe.pdf`
+
+			downloadLink.href = linkSource
+			downloadLink.download = fileName
+			downloadLink.click()
+		} catch (error) {
+			console.error('Error al procesar el PDF:', error)
+		}
 	}
 
 	const uploadDoc = async (e, ticket) => {
 		e.preventDefault()
 		try {
 			const respond = await addDoc(user.idUsuario, user.token, e.target.files[0], ticket)
-			//doc = respond.doc
-			console.log(respond)
+			setDoc(respond.doc)
 		}
 		catch (e) {
 			if (e.response?.data?.error?.name === 'TokenExpiredError') {
@@ -110,7 +110,10 @@ export const ReportStatus = (props) => {
 					{props.data.rol === 'ADMIN' && (
 						<>
 							<SButton onClick={handleFileButtonClick}>
-								Subir Documento
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+									<path d="M11 16V7.85L8.4 10.45L7 9L12 4L17 9L15.6 10.45L13 7.85V16H11ZM6 20C5.45 20 4.97933 19.8043 4.588 19.413C4.19667 19.0217 4.00067 18.5507 4 18V15H6V18H18V15H20V18C20 18.55 19.8043 19.021 19.413 19.413C19.0217 19.805 18.5507 20.0007 18 20H6Z" fill="#E40613" />
+								</svg>
+								Actualizar Informe
 							</SButton>
 							<input
 								type="file"

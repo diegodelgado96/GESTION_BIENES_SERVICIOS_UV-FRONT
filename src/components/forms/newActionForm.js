@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Alert } from 'react-bootstrap'
 import { CancelAceptModal } from '../modals/cancelAceptModal'
-import { Col, Container, Form,  Row   } from 'react-bootstrap'
+import { Col, Container, Form, Row } from 'react-bootstrap'
 import { DivForm, LabelForm, InputForm, PButton2, StyledForm, SButton2, StyledFormSelect } from '../tools/styleContent'
 import { newAction } from '../../services/actions.services'
 import { PropTypes } from 'prop-types'
@@ -11,7 +11,7 @@ import { UseRefreshToken } from '../../hooks/useRefreshToken'
 import { useUser } from '../../hooks/useUser'
 
 export const NewActionForm = (props) => {
-	console.log(props.type)
+	console.log(props)
 	const user = useUser()
 	const refreshToken = UseRefreshToken()
 	const nav = useNavigate()
@@ -63,16 +63,17 @@ export const NewActionForm = (props) => {
 
 
 			const respond = await newAction(
-				user.user.token,
 				user.user.idUsuario,
-				accion,
+				user.user.token,
 				estado,
+				accion,
 				descripcionAccion,
-				props.type
+				props.provider, 
+				props.request
 			)
 			setTitle('Tarea registrada')
 			setMessage('')
-			setSubTitle('El proveedor fue registrado correctamente')
+			setSubTitle('La tarea fue registrada correctamente')
 			await refreshToken.refreshToken(respond)
 			props.newActionR(respond.action)
 		}
@@ -83,7 +84,6 @@ export const NewActionForm = (props) => {
 			setSubTitle('')
 			console.log(e)
 			if (e.response?.data?.error?.name === 'TokenExpiredError' || e.response?.data?.error?.name === 'JsonWebTokenError') {
-				//logout.logOut()
 				window.localStorage.removeItem('loggedAppUser')
 				nav('/')
 			}
@@ -212,7 +212,8 @@ export const NewActionForm = (props) => {
 }
 
 NewActionForm.propTypes = {
-	type: PropTypes.string.isRequired,
+	provider: PropTypes.string.isRequired,
+	request: PropTypes.string.isRequired,
 	idProvider: PropTypes.string.isRequired,
 	close: PropTypes.func.isRequired,
 	handleConfirm: PropTypes.func.isRequired,

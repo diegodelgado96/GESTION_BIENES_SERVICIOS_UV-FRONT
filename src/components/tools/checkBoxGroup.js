@@ -1,24 +1,35 @@
-import React, { useState } from 'react'
-import { PropTypes } from 'prop-types'
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 
 export const CheckboxGroup = (props) => {
-
-	const options = props.optionsList
+	const { optionsList, listSelected } = props
 	const [selectedOptions, setSelectedOptions] = useState([])
 
+	// Establecer las opciones seleccionadas inicialmente al cargar
+	useEffect(() => {
+		setSelectedOptions(optionsList)
+		listSelected(optionsList)
+	}, [optionsList, listSelected])
+
 	const handleCheckboxChange = (option) => {
-		if (selectedOptions.includes(option)) {
-			setSelectedOptions(selectedOptions.filter((item) => item !== option))
-			props.listSelected(selectedOptions.filter((item) => item !== option))
-		} else {
-			setSelectedOptions([...selectedOptions, option])
-			props.listSelected([...selectedOptions, option])
-		}
+		setSelectedOptions((prevSelectedOptions) => {
+			if (prevSelectedOptions.includes(option)) {
+				const updatedOptions = prevSelectedOptions.filter(
+					(item) => item !== option
+				)
+				listSelected(updatedOptions)
+				return updatedOptions
+			} else {
+				const updatedOptions = [...prevSelectedOptions, option]
+				listSelected(updatedOptions)
+				return updatedOptions
+			}
+		})
 	}
 
 	return (
 		<div>
-			{options.map((option) => (
+			{optionsList.map((option) => (
 				<div key={option}>
 					<input
 						type="checkbox"
@@ -35,6 +46,5 @@ export const CheckboxGroup = (props) => {
 
 CheckboxGroup.propTypes = {
 	optionsList: PropTypes.array.isRequired,
-	listSelected: PropTypes.func.isRequired
+	listSelected: PropTypes.func.isRequired,
 }
-

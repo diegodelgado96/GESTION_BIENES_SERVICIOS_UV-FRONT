@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Row, Table } from 'react-bootstrap'
-import { ButtonBox, ButtonCreate, DivForm, PTitleFilter, PButton, StyledForm, SButton, StyledTD, StyledTH, StyledFormSelect, InputForm, LabelForm } from '../tools/styleContent'
+import { ButtonBox, ButtonCreate, DivForm, DivState, PTitleFilter, PButton, StyledForm, SButton, StyledTD, StyledTH, StyledFormSelect, InputForm, LabelForm } from '../tools/styleContent'
 import { getAll } from '../../services/request.services'
-import { ModalActions } from '../modals/modalActions'
-import { ModalProvider } from '../modals/modalProvider'
+import { ModalOptions } from '../modals/modalOptions'
 import { Spinner } from '../tools/spinner'
 import { UseRefreshToken } from '../../hooks/useRefreshToken'
-//import { UseLogout } from '../../hooks/useLogout'
+import { useNavigate } from 'react-router'
 
 export const FilterRequest = () => {
 
-	//const logout = UseLogout()
+	const nav = useNavigate()
 	const refreshToken = UseRefreshToken()
 	const user = JSON.parse(window.localStorage.getItem('loggedAppUser'))
 	const [ticket, setTicket] = useState('')
@@ -19,14 +18,9 @@ export const FilterRequest = () => {
 	const [showSpinner, setShowSpinner] = useState(false)
 	const [request, setRequest] = useState([])
 	const [originalRequest, setOriginalRequest] = useState([])
-	const [type/* , setType */] = useState('')
-	const [show, setShow] = useState(false)
 	const [refresh, setRefresh] = useState(false)
-	const [showActions, setShowActions] = useState(false)
-	const [idView, setIdView] = useState('')
-	const [clicked, setClicked] = useState(false)
-	const [nameProvider, setNameProvider] = useState('')
-	const [idProvider/* , setIdProvider */] = useState(false)
+	const [showOptions, setShowOptions] = useState(false)
+	const [data, setData] = useState([])
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -39,21 +33,26 @@ export const FilterRequest = () => {
 				setOriginalRequest(respond.data)
 				setShowSpinner(false)
 			} catch (error) {
-				console.log(error)
-				//logout.logOut()
+				window.localStorage.removeItem('loggedAppUser')
+				nav('/')
 			}
 		}
 
 		fetchData()
 	}, [refresh])
 
-	const handleCloseModal = () => { setShow(false) }
-	const handleCloseModalActions = () => { setShowActions(false) }
+	const handleCloseModalActions = () => { setShowOptions(false) }
 
 	const formatInput = (str) => {
-		const currentValue = str.replace(/[^0-9]/g, '')
+		const currentValue = str.replace(/[^0-9-]/g, '')
 
-		setTicket(currentValue)
+		const withoutHyphens = currentValue.replace(/-/g, '')
+
+		const formattedValue = withoutHyphens
+			.replace(/(\d{2})(\d{5})(\d{5})/, '$1-$2-$3')
+			.substr(0, 15)
+
+		setTicket(formattedValue)
 	}
 
 	const getDate = (dateStr) => {
@@ -90,15 +89,9 @@ export const FilterRequest = () => {
 		setRequest(filteredRequest)
 	}
 
-	const viewProvider = (idProvider, provider) => {
-		setIdView(idProvider)
-		setShowActions(true)
-		setClicked(true)
-		setNameProvider(provider)
-	}
-
-	const updateClicked = (val) => {
-		setClicked(val)
+	const viewOptions = (info) => {
+		setData(info)
+		setShowOptions(true)
 	}
 
 	const handleConfirmSubmit = (text) => {
@@ -227,12 +220,14 @@ export const FilterRequest = () => {
 												{req.ticket}
 											</StyledTD>
 											<StyledTD>
-												{req.estado}
+												<DivState className={req.estado === 'APROBADO' ? 'green' : req.estado === 'RECHAZADO' ? 'red' : req.estado === 'SUPERVISION' ? 'orange' : ''}>
+													{req.estado}
+												</DivState>
 											</StyledTD>
 											<StyledTD>
 												{getDate(req.fechaCreacion)}
 											</StyledTD>
-											<StyledTD>
+											<StyledTD className={req.etapa === 'TERMINADO' ? 'textGreen' : req.etapa === 'CANCELADO' ? 'textRed' : ''}>
 												{req.etapa}
 											</StyledTD>
 											<StyledTD>
@@ -241,14 +236,14 @@ export const FilterRequest = () => {
 												}
 											</StyledTD>
 											<StyledTD>
-												<a href='#' onClick={() => viewProvider(req.idProveedor, (req.empresa ? req.empresa : req.nombreTitular))}>
+												<a href='#' onClick={() => viewOptions([req])}>
 													<svg xmlns="http://www.w3.org/2000/svg" width="27" height="20" viewBox="0 0 27 20" fill="none">
 														<path d="M25.9154 9.70601C23.1415 3.8626 18.9484 0.921875 13.3273 0.921875C7.7034 0.921875 3.51323 3.8626 0.739294 9.70893C0.513985 10.183 0.513985 10.7389 0.739294 11.2159C3.51323 17.0593 7.70632 20 13.3273 20C18.9513 20 23.1415 17.0593 25.9154 11.2129C26.1407 10.7389 26.1407 10.1888 25.9154 9.70601ZM13.3273 17.8932C8.60756 17.8932 5.15184 15.4997 2.71441 10.4609C5.15184 5.42221 8.60756 3.02866 13.3273 3.02866C18.0471 3.02866 21.5028 5.42221 23.9403 10.4609C21.5058 15.4997 18.0501 17.8932 13.3273 17.8932Z" fill="#99ABB4" />
 														<path d="M13.2105 5.31104C10.3663 5.31104 8.06055 7.6168 8.06055 10.461C8.06055 13.3051 10.3663 15.6109 13.2105 15.6109C16.0546 15.6109 18.3604 13.3051 18.3604 10.461C18.3604 7.6168 16.0546 5.31104 13.2105 5.31104ZM13.2105 13.7382C11.3992 13.7382 9.93325 12.2722 9.93325 10.461C9.93325 8.64971 11.3992 7.18373 13.2105 7.18373C15.0217 7.18373 16.4877 8.64971 16.4877 10.461C16.4877 12.2722 15.0217 13.7382 13.2105 13.7382Z" fill="#99ABB4" />
 													</svg>
 												</a>
 											</StyledTD>
-											<StyledTD>
+											<StyledTD className={req.urgencia === 'URGENTE' ? 'textRed' : ''}>
 												{req.urgencia}
 											</StyledTD>
 										</tr>
@@ -259,21 +254,12 @@ export const FilterRequest = () => {
 					</Table>
 				</Container>
 			</Col>
-			<ModalProvider
-				showModal={show}
-				handleCloseModal={handleCloseModal}
-				handleConfirmSubmit={handleConfirmSubmit}
-				type={type}
-				idProvider={idProvider.toString()}
-			/>
 
-			<ModalActions
-				showModal={showActions}
+			<ModalOptions
+				showModal={showOptions}
 				handleCloseModal={handleCloseModalActions}
-				idProvider={idView.toString()}
-				nameProvider={nameProvider}
-				clicked={clicked}
-				updateClicked={updateClicked}
+				handleConfirmSubmit={handleConfirmSubmit}
+				data={data}
 			/>
 
 			{

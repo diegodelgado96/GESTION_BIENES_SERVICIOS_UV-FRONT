@@ -95,15 +95,15 @@ export const ProviderForm = (props) => {
 						tipoProveedor,
 						idProveedor: id,
 						dv,
-						titular,
-						empresa,
-						diereccion,
+						nombreTitular: titular,
+						nombreEmpresa: empresa,
+						direccion: diereccion,
 						telefono,
 						correo,
-						doc,
-						fechaInicio,
-						fechaFin,
+						fechaInicioContrato: fechaInicio,
+						fechaFinContrato: fechaFin,
 						descripcion,
+						doc,
 						services
 					}
 				)
@@ -287,6 +287,7 @@ export const ProviderForm = (props) => {
 											name='DV'
 											placeholder=''
 											onChange={({ target }) => formatInputDv(target.value)}
+											disabled={!(props.type != 'Editar')}
 										/>
 									</Col>
 								</Col>
